@@ -19,7 +19,6 @@ In Blackjack we must specify the base bet, double down and split.
 In craps we must specify many many bets.  So there will be an array  that keeps track of each bet for the strategy.  Each bet contains an amount, a bet type (hand, double down, split, passline, dont pass, odds, field, come, dont come, place bet).  Bets have different properties.  In 
 Reports
 To make this useful we should be able to set up the game to play 100 hands according to a strategy and then review the results at the end.  
-# of hands/rolls.  
-# of wins  
-# of losses 
+number of hands/rolls.  
+win/loss ratio
 Profit/Loss
