@@ -1,0 +1,151 @@
+Overview:
+Program will apply gambling strategies to the game of Blackjack.  Strategies are comprised of a progression of bets made on the blackjack table along with how to play each hand.  Bets are based on the amount of money currently in play and the number of bets previously won on the current game along with whether the bank roll is x dollars above or below its starting amount.    One part of the program will simulate the selected strategy and the other side will simulate game play.  The results will be saved to a database so they can be viewed in reports in Google Sheets.
+
+Bankroll
+Keeps track of the players bankroll, the size of each bet according to a strategy.  For example, in Blackjack we always bet $10 then if we win one hand the next bet is $15.  If we win that bet we go back to the $10 bet.  
+If we lose a hand we just go back to the $10 bet.
+The betting strategy should be able to simulate these bets and keep track of the win loss percentage and to be applied to different games.  
+
+
+Blackjack is the simpler one because it will just be an array of 52 cards X the number of decks.  Simulate shuffling the cards and then dealing the hands.  Would be nice to run multiple strategies simultaneously so it should be a multi-player game.  That way different players can be running different strategies against the same deck.
+
+In Blackjack we must specify the base bet, double down and split.
+
+
+Bankroll object
+Will maintain the bankroll balance after each round of betting and play
+Will indicate the number of rounds of betting completed by the simulator - can be set to run for 100, 200 or 300 rounds 
+
+Cards object
+This will contain the decks of cards that are being played with.  These decks will be shuffled and then stored in the cards object.  The cards object will be used to draw cards from for each hand.  When the number of cards remaining gets below 20 it will force a new shuffle and start over.
+
+Strategy object
+Can be read like a flowchart 
+Should indicate what to do after each round of play to determine what to do for the next round of play.  When the strategy comes to an end it will just go back to the first step of the strategy.  For instance, in black jack the first bet is $10.  If the first bet loses then go back to the beginning of the strategy.  If the bet is a win then the next bet is $15.  If that bets wins or loses - go back to the first step.
+
+Bet Object 
+There will be an array of bet objects.  They can be assigned as a Pass Line bet, Don’t pass bet, Odds bet, Lay bet, Field bet, Come bet, Don’t come bet, Place Bet, Come bet odds, Don’t come bet lay 
+Once a bet is marked as a lose it will no longer be in play 
+The bet object will indicate the amount, the type of bet and whether it is a win/lose or new
+
+Shuffling Object
+Will need to randomize the position of the cards in the deck.  Should be able to do that X number of times to simulate multiple shuffles.  Should also be able to handle 1-7 decks in each shuffle.  
+
+Game Play Object
+This module will simulate game play by rolling the dice.  Then it will mark each bet as a win or loss and ignore the bets that are not affected.
+For craps the game play object will have to keep track of the Point after it has been established as this will affect subsequent rolls.
+
+For a roll of 7 
+if there is no point established 
+the pass line wins
+don’t pass loses
+field bets lose
+DC on numbers win
+Come bets on numbers lose
+
+If there is a point established 
+the pass line loses
+don’t pass wins
+field bets lose
+place bets lose
+Come bets win
+DC on numbers win
+Come bets on numbers lose
+
+For a roll of 2
+If there is no point established 
+Pass bets lose
+Don’t Pass bets win
+Field bets pay double 
+
+If there is a point established 
+Field bets pay double
+Come bets lose
+Don’t come bets win 
+
+For a roll of 12 
+If there is no point established 
+pass line bets loses
+field bets pay double 
+If there is a point established 
+field bets pay double
+Come bets lose
+
+For a roll of 3
+If there is no point established 
+pass line bets lose
+don’t pass bets win
+Field bets win
+If there is a point established 
+field bets win
+Come bets lose
+Don’t come bets win
+
+For a roll of 11 
+If there is no point established 
+Pass Line bets win
+Don’t pass bets lose
+field bets win
+If there is a point established 
+field bets win
+Come bets win
+Don’t Come bets lose 
+
+For 5, 6, 8
+If there is no point established 
+The new number becomes the point 
+If there is a point established
+If the number matches the point 
+Pass Line Wins
+Don’t Pass loses 
+Place bets for the point win 
+Come bets for the point win
+Don’t come bets for the point lose
+Field bets lose
+Come bets are set on the number 
+Don’t come bets are set on the number 
+
+If the number does not match the point
+Place bets for the number win 
+Come bets  for the number win 
+Don’t come bets for the number lose
+Field bets lose 
+Come bets are set on the number 
+Don’t come bets are set on the number 
+
+For 4, 9, 10 
+If there is no point established 
+The new number becomes the point 
+Field bets win 
+If there is a point established
+If the number matches the point 
+Pass Line Wins
+Don’t Pass loses 
+Place bets for the point win 
+Come bets for the point win
+Don’t come bets for the point lose
+Field bets win
+Come bets are set on the number 
+Don’t come bets are set on the number 
+
+If the number does not match the point
+Place bets for the number win 
+Come bets  for the number win 
+Don’t come bets for the number lose
+Field bets lose 
+Come bets are set on the number 
+Don’t come bets are set on the number 
+
+Strategy object 
+Should be set up with a series of steps that can be read like a flow chart.  Each step will have a decision and then the results of what to do.  
+A very simple strategy for blackjack would be - if the previous hand is a win and the bet is $10 then change the bet to $15.
+If the previous hand is a win and the best is $15 then change the bet to $10
+If the previous hand is a lose change the bet to $!0
+This strategy can be done in 1 step - if previous bet was a win and bet size = $10 then bet size = $15 else best size = $10
+
+The basic strategy for blackjack should be programmed into the game play object and executed without being affected by the strategy.  The blackjack strategies will only contain decisions on whether the last hand was a win or loss and the number and size of bets being played.
+
+We should also have the ability to run multiple strategies side-by-side on the same hands to compare outcomes.
+So we can run one strategy that just bets $10 every time, one that best $15 every time and one that alternates and see how each one fares on 100 hands.
+
+How to program the strategy:
