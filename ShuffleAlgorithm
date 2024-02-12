@@ -1,0 +1,39 @@
+To simulate the game of blackjack we must be able to shuffle the cards.  In the casino they use 7 standard decks at one time to fill a shoe so we must be able to shuffle all 7 decks together.
+
+Objects needed: 
+    Number of Decks (nd) - variable to indicate how many decks are being used - will default to 7
+    New Deck - contains the cards in the order they are found in a new deck
+    Deck Template - will contain all 52 cards in the order they are found in a brand new deck
+    Shoe - an array containing all 364 cards in the order they will be dealt in 
+    Discard - will be filled up with all 364 cards at the beginning of the game and after each shoe is completely dealt
+    Pointers - need a pointer to the next location in the shoe and the next location in the discard
+    Shuffle Groups (sg) - each deck will be divided into 2 groups when it is shuffled so there will be 14 groups to hold all 7 decks.  This is a group array and each group is just an array of the cards it contains
+
+At the start of the game load nd decks of cards into the Discard object
+  Create a standard deck from a template and load the cards into the Discard 
+
+-- Load decks into Discard
+Loop 1 to nd 
+  DiscardPointer = 1 
+  Loop through cards in NewDeck
+    Put the next card into the next location in the Discard group 
+    Increment Discard Pointer 
+  Continue Loop 
+Continue Loop
+
+-- Divide discard pile into sg 
+Loop 1 to nd * 2 (2 groups for each deck in the Discard)
+  Get the next 26 cards from Discard and load into the group 
+Continue Loop
+
+-- Load the cards from the groups into the Shoe object
+Loop 1 to nd * 2 
+  Cards in the group > 1 ?
+    Y - Generate a random number <= the number of cards in the group 
+    N - Number = 1
+    Move the card indicated to the Shoe and remove it from the sg
+    increment the ShoePointer
+    ShoePointer > nd * 52 ? exit Loop
+Continue Loop 
+
+
