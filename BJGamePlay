@@ -1,0 +1,12 @@
+BlackJack game play will occur according to the recommended playing rules.  
+Cards will be dealt 1 to the player, 1 to the dealer, 1 to the player, 1 to the dealer.  
+The second dealer card will be used to determine what the player should do 
+Player turns will continue until the player stands or busts 
+The dealer will hit on anything less than 17
+After cards are dealt the result will be determined and the bet will be updated 
+In the case of a Blackjack for the player they will be paid 3:2 on the bet 
+
+If the player has to Split then a new hand will be created and a new bet for that hand 
+
+An array of player hands will be created
+The bet object will be split as well but will be combined into one amount after all hands are evaluated
