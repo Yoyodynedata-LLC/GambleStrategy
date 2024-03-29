@@ -32,116 +32,23 @@ Shuffling Object
 Will need to randomize the position of the cards in the deck.  Should be able to do that X number of times to simulate multiple shuffles.  Should also be able to handle 1-7 decks in each shuffle.  
 
 Game Play Object
-This module will simulate game play by rolling the dice.  Then it will mark each bet as a win or loss and ignore the bets that are not affected.
-For craps the game play object will have to keep track of the Point after it has been established as this will affect subsequent rolls.
-
-For a roll of 7 
-if there is no point established 
-the pass line wins
-don’t pass loses
-field bets lose
-DC on numbers win
-Come bets on numbers lose
-
-If there is a point established 
-the pass line loses
-don’t pass wins
-field bets lose
-place bets lose
-Come bets win
-DC on numbers win
-Come bets on numbers lose
-
-For a roll of 2
-If there is no point established 
-Pass bets lose
-Don’t Pass bets win
-Field bets pay double 
-
-If there is a point established 
-Field bets pay double
-Come bets lose
-Don’t come bets win 
-
-For a roll of 12 
-If there is no point established 
-pass line bets loses
-field bets pay double 
-If there is a point established 
-field bets pay double
-Come bets lose
-
-For a roll of 3
-If there is no point established 
-pass line bets lose
-don’t pass bets win
-Field bets win
-If there is a point established 
-field bets win
-Come bets lose
-Don’t come bets win
-
-For a roll of 11 
-If there is no point established 
-Pass Line bets win
-Don’t pass bets lose
-field bets win
-If there is a point established 
-field bets win
-Come bets win
-Don’t Come bets lose 
-
-For 5, 6, 8
-If there is no point established 
-The new number becomes the point 
-If there is a point established
-If the number matches the point 
-Pass Line Wins
-Don’t Pass loses 
-Place bets for the point win 
-Come bets for the point win
-Don’t come bets for the point lose
-Field bets lose
-Come bets are set on the number 
-Don’t come bets are set on the number 
-
-If the number does not match the point
-Place bets for the number win 
-Come bets  for the number win 
-Don’t come bets for the number lose
-Field bets lose 
-Come bets are set on the number 
-Don’t come bets are set on the number 
-
-For 4, 9, 10 
-If there is no point established 
-The new number becomes the point 
-Field bets win 
-If there is a point established
-If the number matches the point 
-Pass Line Wins
-Don’t Pass loses 
-Place bets for the point win 
-Come bets for the point win
-Don’t come bets for the point lose
-Field bets win
-Come bets are set on the number 
-Don’t come bets are set on the number 
-
-If the number does not match the point
-Place bets for the number win 
-Come bets  for the number win 
-Don’t come bets for the number lose
-Field bets lose 
-Come bets are set on the number 
-Don’t come bets are set on the number 
+This module will simulate the game play of blackjack using the standard strategy
+In the beginning there will just be one player hand vs one dealer hand
+If we get fancy and upgrade to multiple hands that will come in a later release
 
 Strategy object 
-Should be set up with a series of steps that can be read like a flow chart.  Each step will have a decision and then the results of what to do.  
-A very simple strategy for blackjack would be - if the previous hand is a win and the bet is $10 then change the bet to $15.
-If the previous hand is a win and the best is $15 then change the bet to $10
-If the previous hand is a lose change the bet to $!0
-This strategy can be done in 1 step - if previous bet was a win and bet size = $10 then bet size = $15 else best size = $10
+Should be set up with a series of steps that can be read like a flow chart.  
+The first part of each step will be the bets - for blackjack this will be a dollar amount to bet on the hand
+The bet array will be set up initially with the first bet in the strategy
+The game play object will execute game play and return the bet(s)
+There may be more than one bet returned as there could be splits and double downs
+The result will be whether the total amount of the bets = the original amount, is less than the original amount or is more than the original amount
+After determining the result 
+  The second part of the step in the strategy will indicate what is the next step 
+  The program will go to the next step indicated
+  For blackjack - a loss will likely send us back to step 1 of the strategy
+          - a push or break even will usually repeat the current step 
+          - a win will usually go to the next step unless it is the last step in the strategy in which case it will go back to 1
 
 The basic strategy for blackjack should be programmed into the game play object and executed without being affected by the strategy.  The blackjack strategies will only contain decisions on whether the last hand was a win or loss and the number and size of bets being played.
 
@@ -149,3 +56,10 @@ We should also have the ability to run multiple strategies side-by-side on the s
 So we can run one strategy that just bets $10 every time, one that best $15 every time and one that alternates and see how each one fares on 100 hands.
 
 How to program the strategy:
+  read JSON file 
+  find the step corresponding to the step indicated by the stepCtr
+  set up the bet according to that step
+
+  call the gamePlay object
+
+  loop through the bets array - calculate the total value of the bets 
