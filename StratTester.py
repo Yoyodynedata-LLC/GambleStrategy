@@ -99,15 +99,62 @@ while(handCount<totalHands):
     
 
     #play a hand
+      # DEAL 
+       # deal 1 card to the player 
+       # deal next card to the dealer - do not display
+       # deal second card to the player 
+       # deal up card to the dealer
+       # bjDealer = check for dealer blackjack 
+       # bjPlayer = check for player blackjack 
+       # if (!bjDealer and !bjPlayer) 
+          # PlayerHands = 1 
+	  # Split Routine (PlayerHands)
+          # loop from 1 to PlayerHands 
+                 # PlayersHands(loop) = Player Hand(loop) 
+
+          # Dealers Hand 
 
     #analyze the results
-
+         
     # write hand to log
 
     # check strategy for next step
 
     
 
+
+
+          
+
+       # Split Routine (currentHand)
+       # this routine will check the currentHand for a split condition.  
+       # If it splits: 
+             # increment PlayerHands and assign to local variable NewHand
+             # put one card on each hand and deal a second card to the currenthand 
+             # call Split Routine for check for another split on the currentHand 
+             # deal a second card to the newHand and check for another Split on that hand 
+             
+          # check hand for Player Split 
+               # NewHand = PlayerHands ++
+               # split cards 
+               # deal additional card to each hand 
+               # Split Routine (currentHand)
+               # Split Routine (NewHand)
+         #return to main with PlayerHands indicating the total number of hands to play 
+               
+     # PLAYER HAND (ph)
+       # check strategy for PlayerHand(ph)  -- not a double down or split
+            # hit until stand 
+
+        # total Players Hand 
+        # return total 
+
+     # DEALER HAND 
+        # while dealer Hand total < 17 
+            # hit 
+
+        # total dealers hand 
+        # return total 
 
 
 
