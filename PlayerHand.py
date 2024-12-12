@@ -15,6 +15,12 @@ class playerHand:
    def doubleDown():
       betAmt += betAmt
 
+   def handValue():
+      handValue = 0
+      if (self.cards[0].value=10 && self.cards[1].value=1) handValue = 21
+      if (self.cards[0].value=1 && self.cards[1].value=10) handValue = 21
+
+      
    
    
  
