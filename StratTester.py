@@ -16,7 +16,14 @@ def createShoe():
 
 def shuffle(shuffleTimes):
     # shuffle the cards in the discard and return them to the shoe 
-    #shuffleTimes = 3 
+    # innerLoop goes to shoeSize * 2 which is breaking each 52 card deck into 2 groups of 26 cards each 
+    # for every deck in the shoe 
+    # then pick a random card from each group of 26 cards and place it as the next card in the shoe
+    # each time a card is picked the pile of remaining cards is reduced by 1 so the next random number will 
+    # pick only from the remaining cards 
+
+    # repeat until all cards are randomly picked and added to the shoe
+    
     while (shuffleTimes>0):
         # write to log "shuffling"
         print ("Shuffling...")
@@ -58,6 +65,8 @@ def shuffle(shuffleTimes):
     return
 
 def getBet(step):
+	# loop through the strategy until reaching the step that matches the parameter step
+	# retrieve the bet for that step and return it 
         for i in strat['strategy']:
                 if (i["step"]=step):
                         bet=i["bet"]
@@ -65,13 +74,23 @@ def getBet(step):
 return
                 
 def getNextStep(wlp):
+	# parameter wlp indicates if the previous has was a win, loss or push 
         for i in strat['strategy']:
                 if (i["step"]=step):
                   if (wlp='W'):
-
-                  break
+                      nextStep = i["win"]
+		      break
+	          if (wlp='P'): 
+		      nextStep = i["push"]
+		      break
+	          if (wlp='L'):
+		      nextStep = i["lose"]
+		      break
+			  
+return 
                 
-    
+
+# start of main program here 
 # initialize global variables
 shoeSize = 7
 discard = list()
@@ -96,7 +115,9 @@ while(handCount<totalHands):
         break
 
     # get the next bet in the strategy=
-    
+    getBet(1)
+
+    handCount++
 
     #play a hand
       # DEAL 
