@@ -1,5 +1,6 @@
 #StratTester.py
 import json, itertools, random
+from PlayerHand import playerHand
 
 def createShoe():
     # create a deck object containing a single deck of cards 
