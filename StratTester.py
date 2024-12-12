@@ -63,7 +63,7 @@ def shuffle(shuffleTimes):
         
         shuffleTimes -= 1
     
-    return
+return
 
 def getBet(step):
 	# loop through the strategy until reaching the step that matches the parameter step
@@ -118,14 +118,28 @@ while(handCount<totalHands):
     # get the next bet in the strategy=
     getBet(1)
 
+    ph = playerHand(bet)
+	
     handCount++
 
     #play a hand
       # DEAL 
        # deal 1 card to the player 
+    card = shoe.pop(1)
+    playerHand.hit(card)
+
        # deal next card to the dealer - do not display
-       # deal second card to the player 
+       card = shoe.pop(1)
+       dealerHand.hit(card)
+
+       # deal second card to the player
+       card = shoe.pop(1)
+       playerHand.hit(card)
+
        # deal up card to the dealer
+       card = shoe.pop(1)
+       dealerHand.hit(card)
+
        # bjDealer = check for dealer blackjack 
        # bjPlayer = check for player blackjack 
        # if (!bjDealer and !bjPlayer) 
@@ -137,7 +151,8 @@ while(handCount<totalHands):
           # Dealers Hand 
 
     #analyze the results
-         
+
+    # move all cards used to the discard 
     # write hand to log
 
     # check strategy for next step
