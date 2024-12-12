@@ -1,6 +1,6 @@
 # class for each hand that is played 
 # the value and suit of each card will be added each time a card is added to the PlayerHand 
-class PlayerHand:
+class playerHand:
    def __init__(self, betAmt):
      self.bet = betAmt
      self.cards = []
