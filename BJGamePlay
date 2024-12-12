@@ -3,6 +3,33 @@ Cards will be dealt 1 to the player, 1 to the dealer, 1 to the player, 1 to the 
 For now we will just have one player against the dealer.  In the future it would be helpful to see what happens if we play more than one hand at a time.
 The second dealer card will be used to determine what the player should do and we will use the basic strategy.
 
+An array will be create to contain the players hands - each player hand will consist of multiple cards, the hand total, the amount bet and result 
+
+Player will be dealt a hand 
+Dealer will be dealt a hand with 1 up card and 1 down card 
+
+Step 1 - check for dealer blackjack
+   Y - check for player blackjack 
+      Y - result = push
+      N - result = loss 
+
+Step 1.5 - check for player blackjack 
+   Y - result = win 
+
+Step 2- check for player split hand 
+   Y - create a second hand 
+      # this will create a recursive loop that will go back to step 1.5
+      # more splits may occur as this happens - we should cap the total at 2 splits which would result in 3 hands 
+      assign the second card to the second hand 
+      deal another card to the first hand 
+         - result = call step 1.5 with the first hand again 
+      deal another card to the second hand 
+         - result2 = call step 1.5 with the second hand 
+
+Step 3 - check for player double down 
+   Y - deal one card to the player 
+      
+
 Player turns will continue until the player stands or busts 
 The dealer will hit on anything less than 17
 After cards are dealt the result will be determined and the bet will be updated 
