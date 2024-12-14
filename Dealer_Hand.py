@@ -1,7 +1,7 @@
 # class for the dealers cards 
 # the value and suit of each card will be added each time a card is added to the dealerHand
 # total is calculated as soft or hard total
-class dealerHand:
+class dealer_Hand:
    cards - array holding the cards 
    
    def __init__(self, card):
