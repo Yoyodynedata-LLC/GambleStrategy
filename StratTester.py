@@ -1,6 +1,7 @@
 #StratTester.py
 import json, itertools, random
-from PlayerHand import playerHand
+from Player_Hand import player_Hand
+from Dealer_Hand import dealer_Hand
 
 def createShoe():
     # create a deck object containing a single deck of cards 
@@ -118,7 +119,7 @@ while(handCount<totalHands):
     # get the next bet in the strategy=
     getBet(1)
 
-    ph = playerHand(bet)
+    ph = player_Hand(bet)
 	
     handCount++
 
@@ -126,19 +127,19 @@ while(handCount<totalHands):
       # DEAL 
        # deal 1 card to the player 
     card = shoe.pop(1)
-    playerHand.hit(card)
+    player_Hand.hit(card)
 
        # deal next card to the dealer - do not display
        card = shoe.pop(1)
-       dealerHand.hit(card)
+       dealer_Hand.hit(card)
 
        # deal second card to the player
        card = shoe.pop(1)
-       playerHand.hit(card)
+       player_Hand.hit(card)
 
        # deal up card to the dealer
        card = shoe.pop(1)
-       dealerHand.hit(card)
+       dealer_Hand.hit(card)
 
        # bjDealer = check for dealer blackjack 
        # bjPlayer = check for player blackjack 
