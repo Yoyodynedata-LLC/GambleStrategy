@@ -1,6 +1,6 @@
 # class for each hand that is played 
 # the value and suit of each card will be added each time a card is added to the PlayerHand 
-class playerHand:
+class player_Hand:
    betAmt = 0
    cards = []
    
