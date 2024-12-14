@@ -3,44 +3,78 @@ Cards will be dealt 1 to the player, 1 to the dealer, 1 to the player, 1 to the 
 For now we will just have one player against the dealer.  In the future it would be helpful to see what happens if we play more than one hand at a time.
 The second dealer card will be used to determine what the player should do and we will use the basic strategy.
 
-An array will be create to contain the players hands - each player hand will consist of multiple cards, the hand total, the amount bet and result 
+An array will be create to contain the players hands 
+each player hand will consist of multiple cards, the hand total, the amount bet and result 
+   method for taking a hit 
+   method for removing 1 card -  used for splits 
+   method for totalling the cards returns results 
+   Method for increasing betAmt 
 
-Player will be dealt a hand 
-Dealer will be dealt a hand with 1 up card and 1 down card 
+betAmt will be specified by a parameter 
 
-Step 1 - check for dealer blackjack
+dealerHand object will consist of multiple cards, the hand total
+   method for taking a hit 
+   method for totalling the cards returns results 
+
+create a playerHand object
+playerHand.increaseBet (betAmt)
+
+create a dealerHand object 
+
+deal 1 card to player
+deal 1 card to dealer
+deal second card to player 
+deal second card to dealer 
+dealerUpCard = second dealer card 
+
+ check for dealer blackjack
    Y - check for player blackjack 
-      Y - result = push
-      N - result = loss 
+      playerHand.result = push
+      playerHand.result = loss       
+  N - call processHand (currentHand, dealerUpCard)
 
-Step 1.5 - check for player blackjack 
-   Y - result = win 
 
+# ****************************************************** #
+processHand (playerHand, dealerUpCard)
+dealerHand (dealerHand)
+
+
+processHand 
+ Step 1 - check for player blackjack 
+   playerHand.result = win 
+   return
+   
 Step 2- check for player split hand 
    Y - create a second hand 
-      # this will create a recursive loop that will go back to step 1.5
-      # more splits may occur as this happens - we should cap the total at 2 splits which would result in 3 hands 
-      assign the second card to the second hand 
-      deal another card to the first hand 
-         - result = call step 1.5 with the first hand again 
-      deal another card to the second hand 
-         - result2 = call step 1.5 with the second hand 
+      secondHand.increaseBet(betAmt)
+      retrieve 1 card from currentHand
+      Add card to secondHand
+      add secondHand to array of playerHands
+      currentHand.takeAHit 
+      processHand(currentHand)
+      secondHand.takeAHit
+      processHand(secondHand)
+      return
+
 
 Step 3 - check for player double down 
-   Y - deal one card to the player 
-      
+   Y - playerHand.increaseBet(betAmt)
+       add 1 card to currentHand 
+       return 
 
-Player turns will continue until the player stands or busts 
-The dealer will hit on anything less than 17
-After cards are dealt the result will be determined and the bet will be updated 
-In the case of a Blackjack for the player they will be paid 3:2 on the bet 
-If the dealer gets blackjack and the player does not then the player loses and we move to the next hand 
+Step 4 
+  nextMove = ''
+  while nextMove <> stand
+     nextMove = checkStrategy(playerHand, dealerUpCard)
+     if nextMove = hit 
+            currentHand.takeAHit 
 
-If the player has to Split then a new hand will be created and a new bet for that hand 
-An array of player hands will be created
-The bet object will be split as well but will be combined into one amount after all hands are evaluated
+return 
 
-After each round is completed - the cards must be put into the Discard array.
+dealerHand 
+  while (dealerHand.total < 17) 
+     dealerHand.takeAHit 
+  return 
 
 Basic Strategy to be used:
 1. Dealer showing 2-6 
