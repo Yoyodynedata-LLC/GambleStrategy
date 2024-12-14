@@ -1,4 +1,4 @@
-calculateResult (bankroll, hands, dealerHand)
+calculate_Result (bankroll, hands, dealerHand)
   # loop through the playerHands in the array hands 
   # add up the total of wins and subtract the total losses and return the amount 
   totalWin = 0 
