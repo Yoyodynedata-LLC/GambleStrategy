@@ -1,5 +1,5 @@
-from Player_Hand import playerHand
-from Dealer_Hand import dealerHand
+from Player_Hand import player_Hand
+from Dealer_Hand import dealer_Hand
 
 calculate_Result (bankroll, hands, dealerHand)
   # loop through the playerHands in the array hands 
