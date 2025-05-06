@@ -6,15 +6,15 @@ from Dealer_Hand import dealer_Hand
 def createShoe():
     # create a deck object containing a single deck of cards 
     # then load the decks one at a time into the discard for the number of decks requested
-	deck = list(itertools.product(range(1, 14), ['Spades', 'Hearts', 'Clubs', 'Diamonds']))
-	ctr = 0
-	
-	#load the number of decks into the discard  
-	while(ctr<shoeSize):
-	    discard.extend(deck)
-	    ctr+=1
-	    
-	return    
+    deck = list(itertools.product(range(1, 14), ['Spades', 'Hearts', 'Clubs', 'Diamonds']))
+    ctr = 0
+
+    #load the number of decks into the discard
+    while(ctr<shoeSize):
+        discard.extend(deck)
+        ctr+=1
+
+    return
 
 def shuffle(shuffleTimes):
     # shuffle the cards in the discard and return them to the shoe 
@@ -64,43 +64,159 @@ def shuffle(shuffleTimes):
         
         shuffleTimes -= 1
     
-return
+    return
 
-def getBet(step):
-	# loop through the strategy until reaching the step that matches the parameter step
-	# retrieve the bet for that step and return it 
-        for i in strat['strategy']:
-                if (i["step"]=step):
-                        bet=i["bet"]
+def checkForSplit(ph, upCard):
+    split = 0
+    card1 = ph.check_card(0)
+    card2 = ph.check_card(1)
+    if card1==card2:
+        match card1:
+            case 1:
+                split += 1
+            case 8:
+                split += 1
+            case 9:
+                if 1 < upCard < 7:
+                    split += 1
+                elif 8 <= upCard <= 9:
+                    split += 1
+            case 7:
+                if 1 < upCard <= 7:
+                    split += 1
+            case 6:
+                if 1 < upCard <= 6:
+                    split += 1
+            case 4:
+                if 5 <= upCard <= 6:
+                    split += 1
+            case 3:
+                if 1 < upCard <= 6:
+                    split += 1
+            case 2:
+                if 1 < upCard <= 6:
+                    split += 1
 
-return
-                
-def getNextStep(wlp):
-	# parameter wlp indicates if the previous has was a win, loss or push 
-        for i in strat['strategy']:
-                if (i["step"]=step):
-                  if (wlp='W'):
-                      nextStep = i["win"]
-		      break
-	          if (wlp='P'): 
-		      nextStep = i["push"]
-		      break
-	          if (wlp='L'):
-		      nextStep = i["lose"]
-		      break
-			  
-return 
-                
+    return split
 
-# start of main program here 
+def checkDoublDown(ph, upCard):
+    dd = 0
+    match ph.handTotal():
+        case 2:
+            dd+=1
+        case 10:
+            if upCard<10:
+                dd+=1
+        case 9:
+            if 3 <= upCard <= 6:
+                dd+=1
+        case 3:
+            # dd on 5 or 6
+            if 5 <= upCard <= 6 and ph.softHand==1:
+                dd+=1
+        case 4:
+            # dd on 5 or 6 for A, 3
+            if 5 <= upCard <= 6 and ph.softHand==1:
+                dd+=1
+        case 5:
+            # dd on 4, 5 or 6 for A, 4
+            if 4 <= upCard <= 6 and ph.softHand==1:
+                dd+=1
+        case 6:
+            # dd on 4, 5 or 6 for A, 5
+            if 4 <= upCard <= 6 and ph.softHand==1:
+                dd+=1
+        case 7:
+            # dd on 3-6 for A, 6
+            if 3 <= upCard <= 6 and ph.softHand==1:
+                dd+=1
+        case 8:
+            # dd on 2-6 for A, 7
+            if 2 <= upCard <= 6 and ph.softHand==1:
+                dd+=1
+        case 9:
+            # dd on 6 for A, 8
+            if upCard==6 and ph.softHand==1:
+                dd+=1
+    return dd
+
+
+def playhand(ph, upCard):
+    #check for splits
+    if checkForSplit(ph, upCard)>0:
+        # create a second hand and call playHand for each hand again
+        ph2 = player_Hand(ph.betAmt())
+        playerHands.append(ph2)
+
+        card = ph.removeCard()
+        ph2.take_a_hit(card)
+
+        # deal a new card to the first hand
+        card = shoe.pop(0)
+        ph.take_a_hit(card)
+        playhand(ph, upCard)
+
+        card = shoe.pop(0)
+        ph2.take_a_hit(card)
+        playhand(ph2, upCard)
+
+        # check for double downs
+    elif checkDoublDown(ph, upCard)>0:
+        # take one hit
+        card = shoe.pop(0)
+        ph.take_a_hit(card)
+    else:
+        # play the hand normally
+        while ph.handTotal()<12:
+            card = shoe.pop(0)
+            ph.take_a_hit(card)
+
+        if ph.handTotal()==12 and upCard>1 and upCard<=3:
+            card = shoe.pop(0)
+            ph.take_a_hit(card)
+
+        if upCard==1 or upCard>6:
+            while ph.handTotal()>=12 and ph.handTotal<=16:
+                card = shoe.pop(0)
+                ph.take_a_hit(card)
+
+    return
+
+def calculate_result(dh):
+    winTotal = 0
+    for ph in playerHands:
+        if ph.handTotal()==21 and ph.card_count()==2:
+            if dh.handTotal()==21 and dh.card_count()==2:
+
+                if dh.upCard()==1: #on dealer Ace the player will take even money
+                    winTotal += ph.betAmt()
+            else:
+                winTotal += ph.betAmt()*1.5
+
+        elif dh.handTotal()==21:
+            winTotal += ph.betAmt()*-1
+
+        else:
+            if ph.handTotal()>dh.handTotal():
+                winTotal += ph.betAmt()
+            elif ph.handTotal()<dh.handTotal():
+                winTotal += ph.betAmt*-1
+
+    return winTotal
+
+
+# start of main program here
 # initialize global variables
 shoeSize = 7
 discard = list()
 shoe = list()
+
 bankroll = 250
 bet = 0
 totalHands = 500
 minBet = 10
+winStreak = 0
+playerHands= list()
 
 strat = '{"strategy": [{"step": "1", "bet": "5.0", "win": "2", "lose": "1", "push": "1"}, {"step": "2", "bet": "10.0", "win": "1", "lose": "1", "push": "2"}]}'
 
@@ -112,51 +228,61 @@ shuffle(3)      # shuffle the decks and load them into the shoe
 #iterate through the number of hands or until bankroll < minBet
 handCount = 0
 while(handCount<totalHands):
+    playerHands = list()
+
     # make sure we have enough money to continue 
     if (bankroll<minBet*2):
         break
 
     # get the next bet in the strategy=
-    getBet(1)
+    ph = player_Hand(minBet)
+    playerHands.append(ph)
 
-    ph = player_Hand(bet)
-	
-    handCount++
+    handCount += 1
 
-    #play a hand
-      # DEAL 
-       # deal 1 card to the player 
-    card = shoe.pop(1)
-    player_Hand.hit(card)
+    # deal 1 card to the player
+    card = shoe.pop(0)
+    ph.take_a_hit (card)
 
-       # deal next card to the dealer - do not display
-       card = shoe.pop(1)
-       dealer_Hand.hit(card)
+    # deal next card to the dealer - do not display
+    card = shoe.pop(0)
+    dh = dealer_Hand(card)
 
-       # deal second card to the player
-       card = shoe.pop(1)
-       player_Hand.hit(card)
+    # deal second card to the player
+    card = shoe.pop(0)
+    ph.take_a_hit(card)
 
-       # deal up card to the dealer
-       card = shoe.pop(1)
-       dealer_Hand.hit(card)
+    # deal up card to the dealer
+    card = shoe.pop(0)
+    dh.take_a_hit(card)
 
-       # bjDealer = check for dealer blackjack 
-       # bjPlayer = check for player blackjack 
-       # if (!bjDealer and !bjPlayer) 
-          # PlayerHands = 1 
-	  # Split Routine (PlayerHands)
-          # loop from 1 to PlayerHands 
-                 # PlayersHands(loop) = Player Hand(loop) 
+    result = 0
 
-          # Dealers Hand 
+    # bjDealer = check for dealer blackjack
+    if dh.handTotal()<21 and ph.handTotal()<21:
+        playhand(ph, dh.upCard())
+
+
+    # hit the dealer hand until the total >= 17
+    while dh.handTotal()<17:
+        card = shoe.pop(0)
+        dh.take_a_hit(card)
 
     #analyze the results
+    bankroll += calculate_result(dh)
 
-    # move all cards used to the discard 
-    # write hand to log
+    # move all cards used to the discard
+    for ph in playerHands:
+        while ph.card_count()>0:
 
-    # check strategy for next step
+            card = ph.removeCard()
+            discard.append(card)
+
+    while dh.card_count()>0:
+        card = dh.removeCard()
+        discard.append(card)
+
+    
 
     
 

@@ -3,25 +3,58 @@
 class player_Hand:
    betAmt = 0
    cards = []
-   
-   def __init__(self, betAmt, card):
+   HandValue = 0
+   soft = 0
+
+   def __init__(self, betAmt):
      self.bet = betAmt
-     self.cards.append(card)
+
+   def card_count(self):
+       # return the number of cards in the cards[] array
+       return len(self.cards)
 
    def take_a_hit (self, card):
      self.cards.append(card)
 
+   def check_card(self, cardNum):
+       card = self.cards.pop(cardNum)
+       return card[0]
+
+   def softHand(self):
+       return self.soft
+
+   def removeCard(self):
+       #remove the first card from the hand
+       # used for splitting pairs
+       card = self.cards.pop(0)
+       return card
+
+   def increaseBet(self, bet):
+       self.betAmt = self.betAmt + bet
+
    def handTotal(self):
-     for c in self.cards:
-        total += c.value;
+       # calculate the value of all cards in the hand
+       handTotal = 0
+       hasAces = 0
 
-   def increaseBet(self, bet)
-       self.betAmt = self.betAmt + bet 
+       # check for soft hands
+       for card in self.cards:
+           if card[0] > 1 and card[0] <= 10:
+               handTotal += card[0]
+           elif card[0] > 10:
+               handTotal += 10
+           elif card[0] == 1:
+               handTotal += 1
+               hasAces = 1
 
-   def handValue(self):
-      handValue = 0
-      if (self.cards[0].value=10 && self.cards[1].value=1) handValue = 21
-      if (self.cards[0].value=1 && self.cards[1].value=10) handValue = 21
+       if hasAces == 1:
+           self.soft=1
+           if handTotal + 10 > 17 and handTotal + 10 < 22:
+                handTotal += 10
+
+       self.HandValue = handTotal
+
+       return handTotal
 
       
    
