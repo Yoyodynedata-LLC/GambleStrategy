@@ -15,14 +15,21 @@ class dealer_Hand:
         self.cards.append(card)
         return
 
-    def card_count(self):
+    def getCardcount(self):
         # return the number of cards in the cards[] array
         return len(self.cards)
 
+    def displayhand(self):
+        print("Dealer Hand:")
+        for card in self.cards:
+            displayCard(card)
+
+        return
+
     def upCard(self):
-        #return the first card in list cards
-        card = self.cards[1]
-        return card
+        #return the value of the first card in list cards
+        card = self.cards[0]
+        return card[0]
 
     def removeCard(self):
         # needed for splits when one card is used to create a new hand

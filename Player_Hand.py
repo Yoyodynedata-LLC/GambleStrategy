@@ -1,5 +1,11 @@
 # class for each hand that is played 
-# the value and suit of each card will be added each time a card is added to the PlayerHand 
+# the value and suit of each card will be added each time a card is added to the PlayerHand
+from ShuffleDeck import displayCard
+
+
+
+
+
 class player_Hand:
    betAmt = 0
    cards = []
@@ -9,7 +15,10 @@ class player_Hand:
    def __init__(self, betAmt):
      self.bet = betAmt
 
-   def card_count(self):
+   def getBetamt(self):
+       return self.betAmt
+
+   def getCardcount(self):
        # return the number of cards in the cards[] array
        return len(self.cards)
 
@@ -17,8 +26,8 @@ class player_Hand:
      self.cards.append(card)
 
    def check_card(self, cardNum):
-       card = self.cards.pop(cardNum)
-       return card[0]
+       card = self.cards[cardNum]
+       return card
 
    def softHand(self):
        return self.soft
@@ -28,6 +37,13 @@ class player_Hand:
        # used for splitting pairs
        card = self.cards.pop(0)
        return card
+
+   def displayhand(self):
+       print("Player Hand:")
+       for card in self.cards:
+            displayCard(card)
+
+       return
 
    def increaseBet(self, bet):
        self.betAmt = self.betAmt + bet

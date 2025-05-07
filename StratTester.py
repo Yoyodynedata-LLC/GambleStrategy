@@ -176,7 +176,7 @@ def playhand(ph, upCard):
             ph.take_a_hit(card)
 
         if upCard==1 or upCard>6:
-            while ph.handTotal()>=12 and ph.handTotal<=16:
+            while ph.handTotal()>=12 and ph.handTotal()<=16:
                 card = shoe.pop(0)
                 ph.take_a_hit(card)
 
@@ -185,22 +185,27 @@ def playhand(ph, upCard):
 def calculate_result(dh):
     winTotal = 0
     for ph in playerHands:
+        amtbet = ph.getBetamt()
+
         if ph.handTotal()==21 and ph.card_count()==2:
             if dh.handTotal()==21 and dh.card_count()==2:
 
                 if dh.upCard()==1: #on dealer Ace the player will take even money
-                    winTotal += ph.betAmt()
+                    winTotal += amtbet
             else:
-                winTotal += ph.betAmt()*1.5
+                winTotal += amtbet*1.5
 
         elif dh.handTotal()==21:
-            winTotal += ph.betAmt()*-1
+            winTotal += amtbet*-1
 
         else:
             if ph.handTotal()>dh.handTotal():
-                winTotal += ph.betAmt()
+                winTotal += amtbet
             elif ph.handTotal()<dh.handTotal():
-                winTotal += ph.betAmt*-1
+                winTotal += amtbet*-1
+
+    print ("Total Amt Won: ", winTotal)
+
 
     return winTotal
 
@@ -228,6 +233,7 @@ shuffle(3)      # shuffle the decks and load them into the shoe
 #iterate through the number of hands or until bankroll < minBet
 handCount = 0
 while(handCount<totalHands):
+    print ("$$$$$$$$$$ Bankroll:", bankroll, " $$$$$$$$$$")
     playerHands = list()
 
     # make sure we have enough money to continue 
@@ -271,18 +277,28 @@ while(handCount<totalHands):
     #analyze the results
     bankroll += calculate_result(dh)
 
+    for ph in playerHands:
+        ph.displayhand()
+
+    dh.displayhand()
+
     # move all cards used to the discard
     for ph in playerHands:
-        while ph.card_count()>0:
+        while ph.getCardcount()>0:
 
             card = ph.removeCard()
             discard.append(card)
 
-    while dh.card_count()>0:
+    while dh.getCardcount()>0:
         card = dh.removeCard()
         discard.append(card)
 
-    
+    input ("Press any key to continue")
+
+    # determine next step in strategy
+
+
+
 
     
 
